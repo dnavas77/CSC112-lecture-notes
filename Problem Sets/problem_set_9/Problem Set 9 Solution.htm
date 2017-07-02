@@ -1,0 +1,263 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><script src="chrome-extension://helhccigigbpndbmfffgkoeblgafjdjj/analyster/common.js"></script><script src="chrome-extension://helhccigigbpndbmfffgkoeblgafjdjj/extensionconfig.js"></script><script src="chrome-extension://helhccigigbpndbmfffgkoeblgafjdjj/Core.js"></script>
+
+
+<style>
+body { font: 14px Trebuchet MS; }
+span.star {color: red; font: bold 18px Verdana, Arial, Helvetica,
+sans-serif;}
+tt, pre { color: blue; }
+</style>
+<title>
+CS112 Fall 2015: Problem Set 9 Solution
+</title>
+</head><body><center>
+<h1>Problem Set 9 - Solution</h1>
+<h2>Hash table</h2>
+</center>
+<hr>
+<ol>
+<li>
+You are given the following keys to be hashed into a hash table of
+size 11:
+
+<pre>       96,  43,  72,  68,  63,  28
+</pre>
+Assume the following hash function is used
+<pre>     H(key) = key mod 11
+</pre>
+and chaining (array of linked lists) is used to resolve collisions.
+
+<p>
+</p><ol>
+<li>Show the hash table that results after all the keys are inserted.
+</li><li>Compute the average number of comparisons for successful search.
+</li></ol>
+<p>
+<b>SOLUTION</b>
+</p><ol>
+<li>
+<pre>     0 []-&gt;/
+
+     1 []-&gt;/
+
+     2 []-&gt;68-&gt;/
+
+     3 []-&gt;/
+
+     4 []-&gt;/
+
+     5 []-&gt;/
+
+     6 []-&gt;28-&gt;72-&gt;/
+
+     7 []-&gt;/
+
+     8 []-&gt;63-&gt;96-&gt;/
+
+     9 []-&gt;/
+
+     10[]-&gt;43-&gt;/
+
+</pre>
+</li><li>
+The average number of comparisons for successful search is:
+<pre>    (1+1+2+1+2+1)/6 = 4/3
+</pre>
+</li></ol>
+<hr>
+</li><li>Using chaining to resolve collisions, give the
+worst-case running time (big O) for inserting <em>n</em> keys into an initially
+empty hash table table for each of the following kinds of chains:
+
+<ul>
+<li>Chain is an unordered list
+</li><li>Chain is an ordered list (entries stored in ascending order of keys)
+</li><li>Chain is an AVL tree (ordered by keys)
+</li></ul>
+<p>
+<b>SOLUTION</b>
+</p><p>In the worst case, ALL <em>n</em> entries are in the same chain.
+</p><ul>
+<li>Chain is an unordered list<br>
+Every new entry is inserted at the front of the list, in <em>O(1)</em> time. For <em>n</em>,
+the total time is <em>O(n)</em>
+
+<p></p></li><li>Chain is an ordered list (entries stored in ascending order of keys)<br>
+In the worst case, every new entry is to be added to the end of the chain. The first
+entry is added in 1 step, the second in 1 step, third in 2 steps, etc. The total
+time is:
+<pre>1 + 1 + 2 + ... n-1
+</pre>
+which sums to <em>O(n^2)</em>
+<p></p></li><li>Chain is an AVL tree (ordered by keys)<br>
+Each insert takes logarithmic time in the size of the AVL tree (size includes the inserted
+entry). The first entry takes unit time to insert, the subsequent entries sum up to the
+following:
+<pre>   log(2)+log(3)+...+log(n)
+</pre>
+This simplies to <em>O(nlog n)</em>
+</li></ul>
+<hr>
+</li><li>Using the following class definitions:
+<pre>      class Node {
+          int key;
+          String value;
+          Node next;
+      }
+
+      class Hashtable {
+          Node[] entries;
+          int numvalues;
+          float max_load_factor;
+          public Hashtable(float max_load_factor) { ... } // constructor
+      }
+</pre>
+Complete the following methods of the Hashtable class, using 
+the hash function h(key) = key <b>mod</b> table_size.
+
+<pre>      public void insert(int key, String value) {
+         // COMPLETE THIS METHOD
+      }
+
+</pre>
+<p>
+</p><pre>      private void rehash() {
+         // COMPLETE THIS METHOD
+      }
+</pre>
+Note: When expanding the hash table, double its size.
+<p>
+<b>SOLUTION</b>
+</p><p>
+</p><pre>      public void insert(int key, String value) {
+          int index = key % entries.length();
+          Node e = new Node();
+          e.key = key;
+          e.value = value;
+          e.next = entries[index];
+          entries[index] = e;
+          numvalues++;
+          float load_factor = (double)numvalues / entries.length;
+          if (load_factor &gt; max_load_factor) {
+             rehash();
+          }
+      }
+</pre>
+<pre>      private void rehash() {
+          Node oldEntries[] = entries;
+          int oldCapacity = oldEntries.length(); 
+          int newCapacity = 2*oldCapacity;
+          entries = new Node[newCapacity];
+          numvalues=0;
+          for (int i = 0 ; i &lt; oldCapacity ; i++) {
+              for (Node e = oldEntries[i] ; e != null ; e = e.next) {
+                  insert(e.key, e.value);
+              }
+          }
+      }
+
+</pre>
+<hr>
+</li><li>Suppose you are asked to write a program to count the frequency of occurrence
+of each word in a document. 
+Desrcibe how you would implement your program using:
+<ol>
+<li>A hash table to store words and their frequencies. 
+</li><li>An AVL tree to store words and their frequencies.
+</li></ol>
+For each of these implementations:
+<ol>
+<li>What would be the worst case time to populate the data structure
+with all the words and their frequencies?
+</li><li>What would be the worst case time to look up the frequency of a word? 
+
+</li><li>What would be the worst case time to print all words and their
+frequencies, in alphabetical order of the words?
+</li></ol> 
+Assume there are <em>n</em> distinct words in the document, and a
+total of <em>m</em> words, and <em>m</em> is much greater than
+<em>n</em>. 
+<p>
+<b>SOLUTION</b>
+
+</p><p>Implementation Process:
+</p><ol>
+<li>Hash table: For each word, hash and search in the chain at that location.
+If word already exists, then increment frequency by 1, otherwise add it with
+frequency 1. (So key is word, and value is frequency.)
+</li><li>AVL tree: Tree ordering is alphabetical on words. (In other words, search 
+compares words, and each node in the tree has a word and its frequency.) 
+For each word, search for it in the tree. If it exists, increment
+its frequency by 1, otherwise add it with frequency 1.
+</li></ol>
+
+<p>Running times:
+</p><ol>
+<li>Populating the data structure
+<ol>
+<p></p><li>Hash table: 
+
+<p>In the worst case, all words hash to the same location, giving a chain
+of length <em>n</em>. In order to push the running time to the worst possible,
+the scenario to consider is when the first <em>n</em> words in the document are
+the distinct words, and the following <em>(m-n)</em> words are duplicates
+of the first <em>n</em>
+
+</p><p>To add the first <em>n</em> words would take time:
+</p><pre>1 + 2 + 3 + ... + n = O(n^2)
+</pre>
+Since a word is first searched to see if it exists, and a worst case search will
+be all the way down the chain, the first and add takes 1 unit of time, the second takes
+2 units, etc.
+
+<p>The subsequent <em>m-n</em> words would each be searched on a chain of length <em>n</em>,
+with the worst case search running all the way through the chain, for <em>n</em> units
+of time. So this would amount of a time of <em>(m-n)*n</em>. Since 
+<em>m</em> is much greater than <em>n</em>, 
+this amounts to <em>O(mn)</em> time.
+
+</p><p>So the total time is:
+</p><pre>O(n^2) + O(mn)
+</pre>
+and again, since <em>m</em> much greater than <em>n</em>, this simplifies to <em>O(mn)</em>.
+
+<p></p></li><li>AVL Tree: 
+
+<p>With the same scenario for the worst case as above (distinct words all up front):
+</p><p>The first <em>n</em> inserts would take time:
+</p><pre>log 1 + log 2 + log 3 ... + log n = log (n!)
+</pre>
+There's a math quantity called Stirling's formula that says <em>n</em>! is approximately
+equal to <em>(n/2)^(n/2)</em>:
+<pre>log (n!) is approximately = log ((n/2)^(n/2)) = O(n log n)
+</pre>
+
+<p>The subsequent <em>(m-n)</em> searches would in the worst case take 
+<em>O(log n)</em> time each,
+and since <em>m</em> is much greater than
+ <em>n</em>, this results in <em>O(m log n)</em> time
+
+</p></li></ol>
+<p></p></li><li>Looking up the frequency of a word
+<ol>
+<li>Hash table: O(<em>n</em>), since the longest chain is of
+  length <em>n</em>
+</li><li>AVL Tree: O(log <em>n</em>), since the height of the tree is
+    O(log <em>
+n</em>)
+</li></ol>
+<p></p></li><li>Printing words,frequencies in alphabetical order of words
+<ol>
+<li>Hash table: Since there is no relative ordering of the words in
+the hash table, all the words need to be retrieved (with their frequencies), then
+sorted. The retrieval will take O(<em>n</em>) time, and the sorting will take
+O(<em>n</em>log <em>n</em>) time (using mergesort, for example). So the total time is
+O(<em>n</em>log <em>n</em>).
+</li><li>AVL tree: Since the tree is already ordered alphabetically by
+words, an  inorder traversal will do the trick, in only O(<em>n</em>) time.
+</li></ol>
+
+</li></ol>
+
+
+</li></ol></body></html>

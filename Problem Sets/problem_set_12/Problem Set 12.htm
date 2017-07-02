@@ -1,0 +1,199 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+
+<style>
+body { font: 14px Trebuchet MS; } 
+span.star {color: red; font: bold 18px Verdana, Arial, Helvetica,
+sans-serif;}
+tt, pre { color: blue; }
+</style>
+<title>CS112 Fall 2015: Problem Set 12</title>
+</head><body>
+
+<center>
+<h1>Problem Set 12</h1>
+<h2>Graphs: Traversal, Topological Sorting, Dijkstra's Algorithm</h2>
+</center>
+
+<hr>
+<ul>
+
+<ol>
+<li>
+<font color="red"><b>WORK OUT THE SOLUTION TO THIS PROBLEM AND TURN IT
+IN AT RECITATION</b></font><p>
+
+You are given a directed graph:
+</p><pre>   class Neighbor {
+      public int vertex;
+      public Neighbor next;
+      ...
+   }
+
+   class Vertex {
+      String name;
+      Neighbor neighbors; // adjacency linked lists for all vertices
+   }
+ 
+   public class Graph {
+      Vertex[] vertices;
+
+      // returns an array of indegrees of the vertices, i.e. return[i] is the
+      // number of edges that are directed IN TO vertex i
+      public String[] indegrees() {
+        // FILL IN THIS METHOD
+        ...
+      }
+      ...
+   }
+</pre>
+Assuming that the graph has already been read in, 
+complete the <tt>indegrees</tt> method. 
+
+<hr>
+
+</li><li>What is the big O running time of your <tt>indegrees</tt> implementation
+if the graph has <em>n</em> vertices and <em>e</em> edges? Show your analysis:
+specify the unit time operations you are counting toward the running
+time, derive the total count, and translate to big O.
+
+<hr>
+
+</li><li>
+With the same <tt>Graph</tt> class as in the previous example, assuming
+that the graph is acyclic, and that
+that the <tt>indegrees</tt> method has been implemented, 
+implement a <tt>topsort</tt> method 
+to toplogically sort the vertices using <b>using BFS (breadth-first search)</b>
+(see algorithm in Section 14.4.4 of text):
+
+<pre>   public class Graph {
+      ...
+      public String[] indegrees() {
+         ... // already implemented
+      }
+
+      // returns an array with the names of vertices in topological sequence
+      public String[] topsort() {
+        // FILL IN THIS METHOD
+        ...
+      }
+      ...
+   }
+</pre>
+
+You may use the following <tt>Queue</tt> class:
+<pre>   
+   public class Queue&lt;T&gt; {
+      ...
+      public Queue() {...}
+      public void enqueue(T item) {...}
+      public T dequeue() throws NoSuchElementException {...}
+      public boolean isEmpty() {...}
+      ...
+   }
+
+</pre>
+
+<hr>
+
+</li><li>What is the big O running time of your <tt>topsort</tt> implementation
+if the graph has <em>n</em> vertices and <em>e</em> edges? Show your analysis:
+specify the unit time operations and non-unit time components
+you are counting toward the running time, derive the total count, and translate to 
+big O.
+
+<hr>
+
+</li><li>An <em>undirected</em> graph may be disconnected, if there are certain vertices
+that are unreachable from other vertices. In a disconnected graph, each island of
+vertices is called a <em>connected component</em> - in each island, every vertex 
+can reach all other vertices. 
+
+<p>You are given the same <tt>Graph</tt> class as in problem #1, but
+this time it represents an undirected graph. Also, it does not
+have the <tt>indegrees</tt> method. Instead, it has a recursive dfs 
+implementation. 
+
+</p><p>Implement a method in this class that will use
+dfs to number all connected components (0..), and return an array that holds,
+for each vertex, the number of the connected component to which it belongs.
+What is the big O running time of your implementation?
+
+</p><pre>   public class Graph {
+      Vertex[] vertices;
+
+      // performs a recursive dfs starting at vertex v
+      private void dfs(int v, boolean[] visited) {
+          // already implemented
+        ...
+      }
+
+      // returns an array of connected component membership of vertices,
+      // i.e. return[i] is the number of the connected number to which a vertex belongs
+      // connected components are numbered 0,1,2,...
+      public int[] connectedComponents() {
+          // FILL IN THIS IMPLEMENTATION
+      }
+
+      ...
+   }
+</pre>
+
+<hr>
+
+</li><li>A <em>strongly connected</em> directed graph is one in which every vertex can
+reach all other vertices. You are given the same <tt>Graph</tt> class as in problem
+#1, with the addition of a recursive dfs implementation. Implement a method
+<tt>stronglyConnected</tt> that returns true if the graph is strongly connected,
+and false otherwise. What is the worst case big O running time of your implementation?
+
+<pre>   public class Graph {
+      Vertex[] vertices;
+
+      // performs a recursive dfs starting at vertex v
+      private void dfs(int v, boolean[] visited) {
+          // already implemented
+        ...
+      }
+
+      public boolean stronglyConnected() {
+          // FILL IN THIS IMPLEMENTATION
+      }
+
+      ...
+   }
+</pre>
+
+<hr>
+
+</li><li>Suppose you are given this undirected graph in which the vertices are
+towns, and the edges are toll roads between them. The weight of an edge
+is the dollar amount of toll. 
+
+<p style="margin-left:100px;"><img src="CS112%20Fall%202015%20%20Problem%20Set%2012_files/graph1.png">
+
+</p><p>Use Dijsktra's shortest paths algorithm to
+determine the minimum toll route from <tt>A</tt> to all other cities. 
+
+</p>
+
+<ul>
+
+<li>Show each step
+of the algorithm in tabular form. Here's the table after the initial step:
+
+<pre>    Done   D[B]    D[C]    D[D]    D[E]    D[F]    D[G]    D[H]    D[I]
+   ---------------------------------------------------------------------
+     A     4,A      &#8734;       &#8734;       &#8734;       &#8734;       &#8734;     8,A       &#8734;
+</pre>
+Note that along with the distance, the "previous" vertex is also shown.
+
+<p></p></li><li>Draw the shortest path tree induced on the graph.
+</li></ul>
+
+</li></ol>
+
+</ul>
+
+</body></html>

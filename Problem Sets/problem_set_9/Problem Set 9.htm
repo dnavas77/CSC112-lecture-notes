@@ -1,0 +1,101 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><script src="chrome-extension://helhccigigbpndbmfffgkoeblgafjdjj/analyster/common.js"></script><script src="chrome-extension://helhccigigbpndbmfffgkoeblgafjdjj/extensionconfig.js"></script><script src="chrome-extension://helhccigigbpndbmfffgkoeblgafjdjj/Core.js"></script>
+
+
+<style>
+body { font: 14px Trebuchet MS; }
+span.star {color: red; font: bold 18px Verdana, Arial, Helvetica,
+sans-serif;}
+tt, pre { color: blue; }
+</style>
+<title>
+CS112 Fall 2015: Problem Set 9
+</title>
+</head><body><center>
+<h1>Problem Set 9</h1>
+<h2>Hash table</h2>
+</center>
+<hr>
+<ol>
+<li>
+<font color="red"><b>WORK OUT THE SOLUTION TO THIS PROBLEM AND TURN IT
+IN AT RECITATION</b></font><p>
+You are given the following keys to be hashed into a hash table of
+size 11:
+
+</p><pre>       96,  43,  72,  68,  63,  28
+</pre>
+Assume the following hash function is used
+<pre>     H(key) = key mod 11
+</pre>
+and chaining (array of linked lists) is used to resolve collisions.
+
+<p>
+</p><ol>
+<li>Show the hash table that results after all the keys are inserted.
+</li><li>Compute the average number of comparisons for successful search.
+</li></ol>
+<hr>
+</li><li>Using chaining to resolve collisions, give the
+worst-case running time (big O) for inserting <em>n</em> keys into an initially
+empty hash table table for each of the following kinds of chains:
+<ul>
+<li>Chain is an unordered list
+</li><li>Chain is an ordered list (entries stored in ascending order of keys)
+</li><li>Chain is an AVL tree (ordered by keys)
+</li></ul>
+<hr>
+</li><li>Using the following class definitions:
+<pre>      class Node {
+          int key;
+          String value;
+          Node next;
+      }
+
+      class Hashtable {
+          Node[] entries;
+          int numvalues;
+          float max_load_factor;
+          public Hashtable(float max_load_factor) { ... } // constructor
+      }
+</pre>
+Complete the following methods of the Hashtable class, using 
+the hash function h(key) = key <b>mod</b> table_size.
+
+<pre>      public void insert(int key, String value) {
+         // COMPLETE THIS METHOD
+      }
+
+</pre>
+<p>
+</p><pre>      private void rehash() {
+         // COMPLETE THIS METHOD
+      }
+</pre>
+Note: When expanding the hash table, double its size.
+<hr>
+</li><li>
+
+Suppose you are asked to write a program to count the frequency of occurrence
+of each word in a document. 
+Desrcibe how you would implement your program using:
+<ol>
+<li>A hash table to store words and their frequencies. 
+</li><li>An AVL tree to store words and their frequencies.
+</li></ol>
+For each of these implementations:
+<ol>
+<li>What would be the worst case time to populate the data structure
+with all the words and their frequencies?
+</li><li>What would be the worst case time to look up the frequency of a word? 
+
+</li><li>What would be the worst case time to print all words and their
+frequencies, in alphabetical order of the words?
+</li></ol> 
+Assume there are <em>n</em> distinct words in the document, and a
+total of <em>m</em> words, and <em>m</em> is much greater than
+<em>n</em>. 
+</li></ol>
+
+
+
+</body></html>

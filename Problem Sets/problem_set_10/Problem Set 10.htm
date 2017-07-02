@@ -1,0 +1,117 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+
+<style>
+body { font: 14px Trebuchet MS; } 
+span.star {color: red; font: bold 18px Verdana, Arial, Helvetica,
+sans-serif;}
+tt, pre { color: blue; }
+</style>
+<title>CS112 Fall 2015: Problem Set 10</title>
+</head><body>
+
+<center>
+<h1>Problem Set 10</h1>
+<h2>Heap</h2>
+</center>
+
+<hr>
+<ul>
+
+<ol>
+
+<li> Given the following sequence of integers:
+<pre> 
+    12, 19, 10, 4, 23, 7, 45, 8, 15
+</pre>
+
+  <ol>
+
+    <li> Build a heap by inserting the above set, one integer at
+a time,
+in the given sequence. Show the heap after every insertion. How many
+comparisons in all did it take to build the heap?
+    </li>
+
+    <li> Perform successive <em>delete</em>
+operations on the heap constructed
+in the previous step, until the heap is empty. Show the heap after
+every
+deletion. How many comparisons in all did it take to perform these
+deletions?
+    </li>
+
+  </ol>
+</li>
+<hr>
+<li>
+<font color="red"><b>WORK OUT THE SOLUTION TO THIS PROBLEM AND TURN IT
+IN AT RECITATION</b></font><p>
+Suppose we have a (<b>max</b>) heap that stores integers. 
+(By contrast, in a "min" heap the
+key at any node is <em>less than or equal to</em> the key at its children,
+so the <em>smallest</em> valued key is at the top of the heap.)
+Then,
+given an
+integer <em>k</em>, we would like to print all the values
+in this heap
+that are <em> greater than k</em>. Implement the following
+method to
+do this.
+</p><pre> 
+    public void printGreater(int[] H, int n, int k) {
+       /* your code here */
+    }
+</pre>
+  <em>H</em> is the array storage for the max heap, and <em>n</em>
+is the
+number of entries in the heap.
+  <p><em>Note: The challenge is to do this efficiently. Use
+the heap order
+to reduce the number of entries of the heap to be examined.</em></p>
+<hr>
+</li><li>Consider
+a max heap that only
+supports the operations <b>insert</b>, <b>deleteMax</b>,
+  <b>size</b>, and <b>isEmpty</b>. A client of
+the heap wants to update the priority of an entry in the heap. Since
+there is no search operation, the only way to accomplish the update is
+this:
+  <p></p>
+
+  <ul>
+
+    <li>Perform successive <b>deleteMax</b>
+operations until the entry is extracted
+    </li>
+
+    <li>Update the entry's priority
+    </li>
+
+    <li><b>Insert</b> the entry, as well as all the
+other deleted entries back into the heap
+    </li>
+
+  </ul>
+
+  <p>What would be the worst case running time (big <em>O</em>)
+of this update process on a heap with <em>n</em> entries?
+  </p>
+<hr>
+</li><li>
+
+Suppose you are given two heaps, stored in arrays.
+Write a method to merge them into a single heap, and return this heap. The original
+heaps are not modified:
+<pre>      public static &lt;T extends Comparable&lt;T&gt;&gt; T[] merge(T[] heap1, T[] heap2) {
+        // COMPLETE THIS METHOD
+      }
+</pre>
+<hr>
+</li>
+</ol>
+</ul>
+
+
+
+</body></html>

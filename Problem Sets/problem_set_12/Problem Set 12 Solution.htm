@@ -1,0 +1,379 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+
+<style>
+body { font: 14px Trebuchet MS; } 
+span.star {color: red; font: bold 18px Verdana, Arial, Helvetica,
+sans-serif;}
+tt, pre { color: blue; }
+table { font: 14px Trebuchet MS; border-collapse: collapse;}
+th { border-bottom: 1px solid black; text-align: left; padding-left: 30px;}
+td { padding-left: 30px; }
+tr.total td { border-top: 1px solid black; font-weight: bold;}
+</style>
+<title>CS112 Fall 2015: Problem Set 12 Solution</title>
+</head><body>
+
+<center>
+<h1>Problem Set 12 - Solution</h1>
+<h2>Graphs: Traversal, Topological Sorting, Dijkstra's Algorithm</h2>
+</center>
+
+<hr>
+<ul>
+
+<ol>
+<li>
+<font color="red"><b>WORK OUT THE SOLUTION TO THIS PROBLEM AND TURN IT
+IN AT RECITATION</b></font><p>
+
+You are given a directed graph:
+</p><pre>   class Neighbor {
+      public int vertex;
+      public Neighbor next;
+      ...
+   }
+
+   class Vertex {
+      String name;
+      Neighbor neighbors; // adjacency linked lists for all vertices
+   }
+ 
+   public class Graph {
+      Vertex[] vertices;
+
+      // returns an array of indegrees of the vertices, i.e. return[i] is the
+      // number of edges that are directed IN TO vertex i
+      public String[] indegrees() {
+        // FILL IN THIS METHOD
+        ...
+      }
+      ...
+   }
+</pre>
+Assuming that the graph has already been read in, 
+complete the <tt>indegrees</tt> method. 
+
+<p><b>SOLUTION</b>
+</p><pre>      public String[] indegrees() {
+         int[] indeg = new int[vertices.length];
+         for (int i=0; i &lt; vertices.length; i++) {
+             for (Neighbor nbr=vertices[i].neighbors; nbr != null; nbr=nbr.next) {
+                 indeg[nbr.vertex]++;   
+             }
+         }
+         return indeg;
+      }
+</pre>
+<hr>
+</li><li>What is the big O running time of your <tt>indegrees</tt> implementation
+if the graph has <em>n</em> vertices and <em>e</em> edges? Show your analysis:
+specify the unit time operations you are counting towards the running
+time, derive the total count, and translate to big O.
+
+<p><b>SOLUTION</b>
+
+</p><ul>
+<li>The following unit time operations are counted towards the running time:
+writing into an array location, reading from an array location, and accessing
+a neighbor of a vertex. 
+</li><li>There are <em>e</em> neighbors in all, for all vertices put together, so 
+the neighbor access part contributes <em>e</em> units of time. Reading from
+array locations are done when scanning the vertices array, adding up to
+<em>n</em> units. Writing into array locations happens when 
+incrementing indegrees: there are <em>e</em> increments, one per incoming edge, for
+an additional <em>n</em> units.
+</li><li>Total is <em>e</em> + <em>n</em> + <em>e</em> = <em>n</em> + <em>2e</em>,
+which is O(<em>n+e</em>)
+</li></ul>
+
+<hr>
+
+</li><li>
+With the same <tt>Graph</tt> class as in the previous example, assuming
+that the graph is acyclic, and that
+that the <tt>indegrees</tt> method has been implemented, 
+implement a <tt>topsort</tt> method 
+to toplogically sort the vertices using <b>using BFS (breadth-first search)</b>
+(see algorithm in Section 14.4.4 of text):
+
+<pre>   public class Graph {
+      ...
+      public String[] indegrees() {
+         ... // already implemented
+      }
+
+      // returns an array with the names of vertices in topological sequence
+      public String[] topsort() {
+        // FILL IN THIS METHOD
+        ...
+      }
+      ...
+   }
+</pre>
+
+You may use the following <tt>Queue</tt> class:
+<pre>   
+   public class Queue&lt;T&gt; {
+      ...
+      public Queue() {...}
+      public void enqueue(T item) {...}
+      public T dequeue() throws NoSuchElementException {...}
+      public boolean isEmpty() {...}
+      ...
+   }
+
+</pre>
+
+<p><b>SOLUTION</b>
+
+</p><pre>      // returns an array with the names of vertices in topological sequence
+      public String[] topsort() 
+      throws Exception {
+
+         // compute indegrees        
+         int[] indeg = indegrees();
+
+         int topnum=0;
+         String[] tops = new String[vertices.length];
+         Queue<integer> queue = new Queue<integer>();
+
+         // find all vertices with indegree zero, assign them topological numbers, and enqueue
+         for (int i=0; i &lt; indeg.length; i++) { 
+             if (indeg[i] == 0) {
+                tops[topnum++] = vertices[i].name;
+                queue.enqueue(i);
+             }
+         }
+        
+         // loop until queue is empty
+         while (!queue.isEmpty()) {
+             int v = queue.dequeue();
+             for (Neighbor nbr=vertices[v].neighbors; nbr != null; nbr=nbr.next) {
+                 indegrees[nbr.vertex]--;
+                 if (indegrees[nbr] == 0) {
+                    tops[topnum++] = vertices[nbr.vertex].name;
+                    queue.enqueue(nbr.vertex);
+                 }    
+             }
+         }
+         
+         return tops;
+      }
+</integer></integer></pre>
+
+<hr>
+
+</li><li>What is the big O running time of your <tt>topsort</tt> implementation
+if the graph has <em>n</em> vertices and <em>e</em> edges? Show your analysis:
+specify the unit time operations and non-unit time components
+you are counting toward the running time, derive the total count, and translate to 
+big O.
+
+<p><b>SOLUTION</b>
+
+</p><ul>
+<li>Here's a table of unit time operations counted towards the running time,
+and how many times each of these operations are performed:
+
+<p>
+<table>
+<tbody><tr><th>Operation</th><th>How many times</th></tr>
+<tr><td>Writing into a tops array location</td><td><em>n</em></td></tr>
+<tr><td>Enqueue</td><td><em>n</em></td></tr>
+<tr><td>Dequeue</td><td><em>n</em></td></tr>
+<tr><td>Checking if indegree is zero</td><td><em>n</em> (scan indegrees array
+for zero-indegree vertices) + <em>e</em> (check each time indegree is changed)</td></tr>
+<tr><td>Decrementing indegree</td><td><em>e</em> (each time a neighbor is accessed)</td></tr>
+<tr><td>Accessing a vertices array location</td><td><em>n</em></td></tr>
+<tr><td>Accessing a neighbor</td><td><em>e</em></td></tr>
+<tr class="total"><td>Total</td><td><em>5n</em> + <em>2e</em>, or O(<em>n+e</em>)</td></tr>
+</tbody></table>
+
+</p><p>Also, computing indegrees is <em>O(n+e)</em> time, as shown in the
+previous exercise.
+</p><p>So the running time is O(<em>n+e</em>)
+</p></li></ul>
+
+<hr>
+
+</li><li>An <em>undirected</em> graph may be disconnected, if there are certain vertices
+that are unreachable from other vertices. In a disconnected graph, each island of
+vertices is called a <em>connected component</em> - in each island, every vertex 
+can reach all other vertices. 
+
+<p>You are given the same <tt>Graph</tt> class as in problem #1, but
+this time it represents an undirected graph, and it does not
+have the <tt>indegrees</tt> method.
+
+</p><p>Implement a method in this class that will use
+dfs to number all connected components (0..), and return an array that holds,
+for each vertex, the number of the connected component to which it belongs.
+Implement helper methods as necessary. 
+What is the big O running time of your implementation?
+
+</p><pre>   public class Graph {
+      Vertex[] vertices;
+
+      // returns an array of connected component membership of vertices,
+      // i.e. return[i] is the number of the connected number to which a vertex belongs
+      // connected components are numbered 0,1,2,...
+      public int[] connectedComponents() {
+          // FILL IN THIS IMPLEMENTATION
+      }
+
+      ...
+   }
+</pre>
+
+<p><b>SOLUTION</b>
+
+</p><pre>
+      // recursive dfs modified to deal out component number
+      private void dfs(int v, boolean[] visited, int[] compNums, int num) {
+         visited[v] = true;
+         compNums[v] = num;
+         for (Neighbor nbr=vertices[i].neighbors; nbr != null; nbr=nbr.next) {
+             if (!visited[nbr.vertex]) {
+                dfs(nbr.vertex, visited, compNums, num);
+             }
+         }
+      }
+
+      // returns an array of connected component membership of vertices,
+      // i.e. return[i] is the number of the connected number to which a vertex belongs
+      // connected components are numbered 0,1,2,...
+      public int[] connectedComponents() {
+         boolean[] visited = new boolean[vertices.length];
+         int[] compNums = new int[vertices.length];
+
+         for (int i=0,num=0; i &lt; vertices.length; i++,num++) {
+             for (int j=0; j &lt; visited.length; j++) {
+                 if (!visited[i]) {
+                    dfs(i, visited, compNums, num);
+                 }
+             }
+         }
+         return compNums;
+      }
+</pre>
+
+<p>The only addition to the basic dfs implementation is the assignment of a
+component number to a vertex immediately after it is marked as visited. This
+adds O(<em>n</em>) to the original running time of O(<em>n+e)</em>), which
+does not make a difference. There is a scan of the visited array in the
+connectComponents method, which takes O(<em>n</em>) time. So the total
+running time is O(<em>n+e</em>)
+
+</p><hr>
+
+</li><li>A <em>strongly connected</em> directed graph is one in which every vertex can
+reach all other vertices. You are given the same <tt>Graph</tt> class as in problem
+#1, with the addition of a recursive dfs implementation. Implement a method
+<tt>stronglyConnected</tt> that returns true if the graph is strongly connected,
+and false otherwise. What is the worst case big O running time of your implementation?
+
+<pre>   public class Graph {
+      Vertex[] vertices;
+
+      // performs a recursive dfs starting at vertex v
+      private void dfs(int v, boolean[] visited) {
+          // already implemented
+        ...
+      }
+
+      public boolean stronglyConnected() {
+          // FILL IN THIS IMPLEMENTATION
+      }
+
+      ...
+   }
+</pre>
+
+<p><b>SOLUTION</b>
+
+</p><p>In the worst case, every vertex can reach all other vertices. The dfs method is
+is called once for
+each vertex, and the time for a dfs run is O(<em>n+e</em>). So the total time
+is <em>n</em>*O(<em>n+e</em>) = O(<em>n<sup>2</sup>+ne</em>). (Note: since <em>e</em>
+can be anywhere between <em>0</em> and O(<em>n<sup>2</sup></em>), we cannot simplify
+the big O result any further. 
+
+</p><pre>      public boolean stronglyConnected() {
+         boolean[] visited = new boolean[vertices.length];
+         for (int i=0; i &lt; vertices.length; i++) {
+             for (int j=0; j &lt; visited.length; j++) {
+                 visited[i] = false;
+             }
+
+             dfs(i, visited);
+
+             for (int j=0; j &lt; visited.length; j++) {
+                 if (!visited[j]) {
+                    return false;
+                 }
+             }
+         }
+         return true;
+      } 
+</pre>
+
+<p>In the worst case, every vertex can reach all other vertices. The dfs method
+is called once for
+each vertex, and the time for a dfs run is O(<em>n+e</em>). So the total time
+is <em>n</em>*O(<em>n+e</em>) = O(<em>n<sup>2</sup>+ne</em>). (Note: since <em>e</em>
+can be anywhere between <em>0</em> and O(<em>n<sup>2</sup></em>), we cannot simplify
+the big O result any further. 
+
+</p><hr>
+
+</li><li>Suppose you are given this undirected graph in which the vertices are
+towns, and the edges are toll roads between them. The weight of an edge
+is the dollar amount of toll. 
+
+<p style="margin-left:100px;"><img src="Problem%20Set%2012%20Solution_files/graph1.png">
+
+</p><p>Use Dijsktra's shortest paths algorithm to
+determine the minimum toll route from <tt>A</tt> to all other cities. 
+
+</p>
+
+<ul>
+
+<li>Show each step
+of the algorithm in tabular form. Here's the table after the initial step:
+
+<pre>    Done   D[B]    D[C]    D[D]    D[E]    D[F]    D[G]    D[H]    D[I]
+   ---------------------------------------------------------------------
+     A     4,A      &#8734;       &#8734;       &#8734;       &#8734;       &#8734;     8,A       &#8734;
+</pre>
+Note that along with the distance, the "previous" vertex is also shown.
+
+<p></p></li><li>Draw the shortest path tree induced on the graph.
+</li></ul>
+
+<p><b>SOLUTION</b>
+
+</p><pre>    Done   D[B]    D[C]    D[D]    D[E]    D[F]    D[G]    D[H]    D[I]
+   ---------------------------------------------------------------------
+     A     4,A       &#8734;      &#8734;       &#8734;       &#8734;        &#8734;     8,A       &#8734;
+     B            12,B      &#8734;       &#8734;       &#8734;        &#8734;     8,A       &#8734;
+
+     H            12,B      &#8734;       &#8734;       &#8734;       9,H            15,H
+     G            12,B      &#8734;       &#8734;       11,G                   15,H
+     F            12,B     25,F    21,F                          15,H
+     C                     19,C    21,F                          14,C
+     I                     19,C    21,F
+     D                             21,F
+     E
+</pre>
+Note that along with the distance, the "previous" vertex is also shown.
+
+<p>The shortest path tree induced on the graph:
+</p><p><img src="Problem%20Set%2012%20Solution_files/spt.png">
+
+</p></li></ol>
+
+</ul>
+
+</body></html>

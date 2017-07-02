@@ -1,0 +1,139 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<style>
+body { font: 14px Trebuchet MS; }
+span.star {color: red; font: bold 18px Verdana, Arial, Helvetica,
+sans-serif;}
+pre { color: blue; }
+</style>
+<title>
+CS112 Fall 2015 Problem Set 8
+</title>
+</head>
+<body><center>
+<h1>Problem Set 8</h1>
+<h2>Binary Tree, Huffman Coding</h2>
+</center>
+<hr>
+<ol>
+<li><span class="star">*</span> Answer the following questions in
+terms of <em>h</em>, the height of a binary tree:
+<ol>
+<li> What is the <b>minimum</b> possible number of nodes in a binary
+tree of height <em>h</em>?
+</li><li> A <em>strictly</em> binary tree is one in which every node has
+either no children or two children; in other words, there is <b>no</b>
+node that has exactly one child. What is the <b>minimum</b> possible number
+of nodes in a strictly binary tree of height <em>h</em>?
+
+</li><li> A <em>complete</em> binary tree is one in which every level
+<b>but</b> the last has the maximum number of nodes possible at that level; the
+last level may have any number of nodes. What is the <b>minimum</b>
+possible number of nodes in a complete binary tree of height <em>h</em>?
+</li>
+</ol> 
+<hr>
+</li><li>
+<font color="red"><b>WORK OUT THE SOLUTION TO THIS PROBLEM,
+AND TURN IT IN AT RECITATION</b></font>
+<p> Two binary trees are <em>isomorphic</em> if they have the same shape
+(i.e. they have identical structures.)
+Implement the following <b>recursive</b> method:
+
+</p><pre>    public static &lt;T&gt; boolean isomorphic(BTNode&lt;T&gt; T1, BTNode&lt;T&gt; T2) {
+     /* your code here */
+    }
+
+</pre>
+that returns <b>true</b> if the trees rooted at T1 and T2 are 
+isomorphic, and false otherwise. <tt>BTNode</tt>
+is defined as follows:
+<pre>     public class BTNode&lt;T&gt; {
+         T data;
+         BTNode&lt;T&gt; left, right;
+         BTNode(T data, BTNode&lt;T&gt; left, BTNode&lt;T&gt; right) {
+             this.data = data;
+             this.left = left;
+             this.right = right;
+         }
+     }
+
+</pre>
+<hr>
+</li><li>The <em>radix tree</em> data structure shown below stores the bit strings
+0,1,01,010,100, and 1011 in such a way that each left branch represents a 0
+and each right branch represents a 1.
+<p></p><pre>            
+                 X
+               /   \
+              0     1
+               \   /
+              01  X 
+             /   /  \ 
+           010  100  X
+                      \
+                     1011
+</pre>
+Nodes that do not have any stored bit strings will have a dummy value 'X' instead.
+
+<p>To find whether a bit string exists in this radix tree, start from the root,
+and scanning the bits of the string left to right, take a left turn if the
+but is 0, and a right turn if the bit is 1. If a node can be reached using this
+sequence of turns, and it does not contain the dummy value 'X', then the bit string
+is found, else it is not found.
+</p><ol>
+<li>Given the following bit strings:
+<pre>  1011, 01, 0010, 1010, 011, 1000, 0101
+</pre>
+Starting with an empty radix tree, build it up to store these strings, showing
+the radix tree after <em>each</em> bit string is inserted. (To insert a new
+string you may have to insert more than one new node in the tree built thus far.)
+
+</li><li>How many units of time did it take to build this tree? Treat 
+taking a turn at an existing branch, and inserting a new branch as basic
+unit time operations.
+</li><li>How many units of time would it take to <em>lexicographically sort</em> the
+bit strings in this radix tree, after all the strings have been inserted? Use
+the same basic operations as in the previous question. The output of the sort
+should be:
+<pre>   0010  01  0101  011  1000  1010  1011
+</pre>
+(Lexicographic sort is like alphabetic sort, 0 precedes 1)
+</li><li>How many units of time
+would it take in the worst case to insert a new <em>k</em>-bit
+string into a radix tree? (ANY radix tree, not the specific one above.)
+</li><li>How many units of time would it take in the worst case
+to insert an arbitrary number of bit strings
+whose total length is <em>n</em> bits?
+</li></ol>
+<hr>
+</li><li>Exercise 9.4, page 295 of the textbook.
+<ol>
+<p></p><li>Build a Huffman tree for the following set of characters, given
+their frequencies:
+<pre>        R   C   L   B   H   A   E
+        6   6   6  10  15  20  37
+</pre>
+<p>
+</p></li><li>Using this Huffman tree, encode the following text:
+<pre>    CLEARHEARBARE
+</pre>
+<p></p></li>
+<li>What is the average code length?
+<p>
+</p></li><li>If it takes 7 bits to represent a character without encoding,
+then for the above text, what is the ratio of the encoded length to
+the unencoded?
+
+<p></p></li><li>Decode the following (the string has been broken up into 7-bit
+chunks for readability):
+<pre>   1111011  1010111  1101110  0010011  111000
+
+</pre>
+</li>
+</ol>
+</li></ol>
+
+
+
+</body></html>

@@ -1,0 +1,113 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+
+
+<style>
+body { font: 14px Trebuchet MS; } 
+span.star {color: red; font: bold 18px Verdana, Arial, Helvetica,
+sans-serif;}
+tt, pre { color: blue; }
+</style>
+<title>CS112 Fall 2015: Problem Set 11</title>
+</head><body>
+
+<center>
+<h1>Problem Set 11</h1>
+<h2>Graphs: Representation, Traversal</h2>
+</center>
+
+<hr>
+<ul>
+
+<ol>
+<li>
+<p>Suppose a weighted undirected graph has <em>n</em> vertices and
+<em>e</em> edges. The weights are all integers. Assume that the space
+needed to store an integer is the same as the space needed to store
+an object reference, both equal to one unit. <em>What is the minimum
+value of e</em> for which the adjacency matrix representation would 
+require less space than the adjacency linked lists representation?
+Ignore the space needed to store vertex labels.
+</p><hr>
+</li><li> The complement of an <b>undirected</b> graph, <b>G</b>, is a graph 
+<b>GC</b> such that:
+<ul>
+<li> <b>GC</b> has the same set of vertices as <b>G</b>
+</li><li> For every edge <em>(i,j)</em> in <b>G</b>, there is no edge
+<em>(i,j)</em> in <b>GC</b>
+</li><li> For every pair of vertices <em>p</em> and <em>q</em> in <b>G</b>
+for which there is no edge <em>(p,q)</em>, there is an edge <em>(p,q)</em> in 
+<b>GC</b>.
+</li></ul><p>
+Implement a method that would return the complement
+of the <b>undirected</b> graph on which this method is applied. 
+</p><pre>    class Edge {
+       int vnum;
+       Edge next;
+    }
+
+    public class Graph {
+       Edge[] adjlists;  // adjacency linked lists
+       ...
+       public Graph complement() {
+          // FILL IN THIS METHOD
+          ...
+       }
+    }
+</pre>
+
+What would be the worst case running time (big O) of an implementation for a
+graph with <em>n</em> vertices and <em>e</em> edges?
+<hr>
+</li><li>
+<font color="red"><b>WORK OUT THE SOLUTION TO THIS PROBLEM AND TURN IT IN AT RECITATION
+</b></font>
+
+<p>Consider this graph:
+</p><p style="margin-left:100px;"><img src="Problem%20Set%2011_files/forkjoin.png">
+
+</p><p>This graph has <em>n+2</em> vertices and 2<em>n</em> edges. For
+every vertex labeled <em>i</em>, <em>1 &lt;= i &lt;= n</em>, there is an
+edge from <em>S</em> to <em>i</em>, and an edge from <em>i</em> to
+
+<em>T</em>.
+
+</p><ol>
+<li>How many different depth-first search sequences are possible if the
+start vertex is <em>S</em>? 
+</li><li>How many different breadth-first search sequences are possible if the
+start vertex is <em>S</em>? 
+</li></ol>
+
+<hr>
+</li><li>
+<p><span class="star">*</span> You can use DFS to check if there is a path from one vertex to another
+in a directed graph. 
+
+</p><p>Implement the method <b>hasPath</b> in the following. Use additional
+class fields/helper methods as needed:
+
+
+</p><pre>   public class Neighbor {
+      public int vertex;
+      public Neighbor next;
+      ...
+   }
+
+   public class Graph {
+      Neighbor[] adjLists;  // adjacency linked lists for all vertices
+
+      // returns true if there is a path from v to w, false otherwise
+      public boolean hasPath(int v, int w) {
+        // FILL IN THIS METHOD
+        ...
+      }
+   }
+</pre>
+
+
+</li></ol>
+
+</ul>
+
+</body></html>

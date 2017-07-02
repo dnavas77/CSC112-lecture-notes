@@ -1,0 +1,12 @@
+apps.graph
+apps.linear
+apps.linear.postfix
+apps.linear.simulation
+apps.linear.unixPrinter
+apps.sort
+apps.tree
+apps.tree.scheduling
+bookexamples
+structures.graph
+structures.linear
+structures.tree
